@@ -8,7 +8,7 @@ import MapView, {Marker, PROVIDER_GOOGLE} from "react-native-maps";
 import { styles } from "./styles";
 
 export default function App() {
-  const map = useRef();
+  const map = useRef<MapView>(null);
 
   const [location, setLocation] = useState(null);
 
@@ -36,6 +36,11 @@ export default function App() {
             }
             
             setLocation(loc);
+            map.current?.animateCamera({
+                pitch: 40,
+                center: info.coords,
+                zoom: 18.5
+            })
         });   
         
   },[location])
@@ -61,8 +66,8 @@ export default function App() {
                     latitude:info.coords.latitude,
                     longitude:info.coords.longitude
                 },
-                zoom: 18,
-                pitch:0,
+                zoom: 18.5,
+                pitch:40,
                 altitude:0,
                 heading:0
             };
@@ -78,7 +83,7 @@ export default function App() {
   return (
     <View style={styles.container}>
         <MapView 
-            //ref={map}
+            ref={map}
             style={{flex:1, width:'100%'}}
             provider={PROVIDER_GOOGLE}
             camera={location}
